@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Security - Naive Bayes</title>
+</head>
+<body>
+
+<h2>🤖 AI Security Check (Naive Bayes)</h2>
+
+<input type="text" id="input" placeholder="Enter text">
+<button onclick="check()">Check</button>
+
+<h3 id="result"></h3>
+
+<script>
+function check() {
+    let text = document.getElementById("input").value;
+
+    fetch('/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerText = data.status;
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple MFA</title>
+</head>
+<body>
+
+<h2>Simple MFA</h2>
+
+<form action="/login" method="post">
+    <h3>Login</h3>
+    Username: <input type="text" name="username"><br><br>
+    Password: <input type="password" name="password"><br><br>
+    <button type="submit">Login</button>
+</form>
+
+<hr>
+
+<form action="/verify" method="post">
+    <h3>Verify OTP</h3>
+    OTP: <input type="text" name="otp"><br><br>
+    <button type="submit">Verify</button>
+</form>
+
+</body>
+</html>

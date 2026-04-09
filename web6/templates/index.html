@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Sentiment Analysis</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <h2>Live Comment Sentiment Analysis</h2>
+
+    <input type="text" id="comment" placeholder="Type your comment">
+    <button onclick="sendComment()">Analyze</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+        const socket = io();
+
+        function sendComment() {
+            const text = document.getElementById("comment").value;
+            socket.emit('comment', { text: text });
+        }
+
+        socket.on('sentiment_result', function(data) {
+            document.getElementById("result").innerText =
+                "Sentiment: " + data.sentiment;
+        });
+    </script>
+</body>
+</html>

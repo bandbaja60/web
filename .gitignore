@@ -1,0 +1,4 @@
+node_modules/
+.spam_model.pkl/
+.vectorizer.pkl/
+package-lock.json/

@@ -1,0 +1,51 @@
+🎯 Aim
+
+To design and implement a system that classifies text messages as Spam or Not Spam using Machine Learning techniques and deploy it using a web application.
+
+📚 Theory
+
+Spam message classification is an application of Natural Language Processing (NLP), which deals with analyzing and processing textual data 📩. The goal is to automatically detect unwanted or fraudulent messages.
+In this experiment, we use the Naive Bayes Algorithm, specifically the Multinomial Naive Bayes classifier, which is highly efficient for text classification problems.
+
+🔤 Text Vectorization
+
+Machine learning models cannot process raw text directly. Therefore, the text is converted into numerical format using the Bag of Words Model.
+
+This is implemented using CountVectorizer, which:
+
+Converts text into a matrix of word counts
+Represents each message as a vector
+⚙️ Model Training and Testing
+The dataset is split into training (80%) and testing (20%) sets
+The model learns patterns from training data
+Predictions are made on test data
+Performance is evaluated using accuracy score
+💾 Model Saving
+
+The trained model and vectorizer are saved using the pickle library so that they can be reused without retraining.
+
+🌐 Web Application using Flask
+
+The trained model is deployed using Flask, which provides an API interface.
+
+User sends a message through the web page
+The message is transformed using the saved vectorizer
+The model predicts whether it is spam or not
+The result is displayed to the user
+
+🔄 Working Procedure
+Load dataset from file
+Preprocess and convert text into vectors
+Split dataset into training and testing sets
+Train model using Naive Bayes algorithm
+Evaluate accuracy
+Save model and vectorizer
+Build Flask API for prediction
+Take user input and display result
+📊 Result
+
+The system successfully classifies messages as Spam or Not Spam with good accuracy using the trained model.
+
+✅ Conclusion
+
+This experiment demonstrates that Machine Learning and NLP techniques can effectively detect spam messages. The system can be deployed as a real-time application using Flask.

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Test</title>
+</head>
+<body>
+    <h1>🤖 Chatbot</h1>
+    
+    <div>
+        <input type="text" id="userInput" placeholder="Type message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    
+    <div id="chatBox" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px; height: 300px; overflow-y: auto;">
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('userInput').value;
+            if (!input.trim()) return;
+
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += '<p><strong>You:</strong> ' + input + '</p>';
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: input })
+                });
+                const data = await res.json();
+                chatBox.innerHTML += '<p><strong>Bot:</strong> ' + data.reply + '</p>';
+            } catch (err) {
+                chatBox.innerHTML += '<p><strong>Error:</strong> ' + err + '</p>';
+            }
+
+            document.getElementById('userInput').value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

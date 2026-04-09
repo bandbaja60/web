@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Products</h2>
+<ul id="products"></ul>
+
+<h3>Recommended</h3>
+<ul id="recommendations"></ul>
+
+<script>
+let products = [
+{id: 1, name: "Laptop"},
+{id: 2, name: "Phone"},
+{id: 3, name: "Headphones"},
+{id: 4, name: "Shirt"},
+{id: 5, name: "Jeans"},
+{id: 6, name: "Jacket"}
+];
+
+// Display products
+let list = document.getElementById("products");
+
+for (let i = 0; i < products.length; i++) {
+    let li = document.createElement("li");
+
+    li.innerHTML = products[i].name +
+    ' <button onclick="recommend(' + products[i].id + ')">View</button>';
+
+    list.appendChild(li);
+}
+
+// Get recommendations
+function recommend(id) {
+    fetch('/recommend', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({id: id})
+    })
+    .then(res => res.json())
+    .then(data => {
+        let rlist = document.getElementById("recommendations");
+        rlist.innerHTML = "";
+
+        for (let i = 0; i < data.length; i++) {
+            let li = document.createElement("li");
+            li.innerText = data[i].name;
+            rlist.appendChild(li);
+        }
+    });
+}
+</script>
+
+</body>
+</html>

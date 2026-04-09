@@ -1,0 +1,66 @@
+ Introduction
+
+Image classification is a task in Computer Vision where a model identifies objects present in an image. In this practical, we build a web application using Flask that classifies uploaded images using a pre-trained deep learning model called MobileNetV2.
+
+ Technologies Used
+Flask: A lightweight Python web framework used to create web applications.
+TensorFlow / Keras: Used for loading and running the deep learning model.
+MobileNetV2: A pre-trained Convolutional Neural Network trained on the ImageNet dataset dataset.
+NumPy: Used for numerical operations.
+PIL (Python Imaging Library): Used to process and resize images.
+
+ Working Principle
+1. Model Loading
+The application loads a pre-trained MobileNetV2 model with weights trained on ImageNet:
+No need to train from scratch.
+Can classify images into 1000 categories.
+
+2. User Input via Web Interface
+The user uploads an image through a web form (index.html).
+Flask handles GET and POST requests.
+
+3. Image Preprocessing
+Before feeding the image into the model:
+Resize image to 224×224 pixels (required input size).
+Convert image to a NumPy array.
+Normalize pixel values using MobileNetV2 preprocessing.
+Expand dimensions to match model input shape (1, 224, 224, 3).
+
+4. Prediction
+The processed image is passed to the model using model.predict().
+The model outputs probabilities for 1000 classes.
+
+5. Decoding Output
+The function decode_predictions() converts raw predictions into:
+Class label (e.g., "dog", "car")
+Probability score
+The top prediction is selected and displayed.
+6. Displaying Result
+The predicted label is sent back to the HTML template.
+Displayed dynamically on the webpage.
+
+Concept of Transfer Learning
+This project uses transfer learning, where:
+A model trained on a large dataset (ImageNet) is reused.
+Saves time and computational resources.
+Provides high accuracy without training from scratch.
+
+ Application Flow
+User uploads image
+Flask receives request
+Image is preprocessed
+Model predicts class
+Result is displayed
+
+ Advantages
+Fast and efficient due to pre-trained model
+Easy to deploy using Flask
+No need for large dataset or training
+
+ Limitations
+Limited to ImageNet classes
+Accuracy depends on image quality
+Cannot recognize custom objects without retraining
+
+Conclusion
+This practical demonstrates how deep learning models can be integrated with web frameworks to build intelligent applications. It combines machine learning, image processing, and web development into a single system.
