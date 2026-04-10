@@ -1,55 +1,71 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Product Recommendations</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 20px auto; }
+        button { padding: 8px 12px; margin: 5px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #0056b3; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 10px; background: #f0f0f0; margin: 5px 0; border-radius: 4px; }
+    </style>
+</head>
 <body>
+    <h1>Product Recommendation System</h1>
+    
+    <h2>Products</h2>
+    <div id="products"></div>
+    
+    <h2>Recommended Products</h2>
+    <ul id="recommendations"></ul>
 
-<h2>Products</h2>
-<ul id="products"></ul>
+    <script>
+        const products = [
+            {id: 1, name: "Laptop"},
+            {id: 2, name: "Phone"},
+            {id: 3, name: "Headphones"},
+            {id: 4, name: "Shirt"},
+            {id: 5, name: "Jeans"},
+            {id: 6, name: "Jacket"}
+        ];
 
-<h3>Recommended</h3>
-<ul id="recommendations"></ul>
+        // Display products
+        const productDiv = document.getElementById("products");
+        products.forEach(product => {
+            const btn = document.createElement("button");
+            btn.textContent = product.name;
+            btn.onclick = () => recommend(product.id);
+            productDiv.appendChild(btn);
+        });
 
-<script>
-let products = [
-{id: 1, name: "Laptop"},
-{id: 2, name: "Phone"},
-{id: 3, name: "Headphones"},
-{id: 4, name: "Shirt"},
-{id: 5, name: "Jeans"},
-{id: 6, name: "Jacket"}
-];
+        // Get recommendations
+        async function recommend(id) {
+            try {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: id})
+                });
 
-// Display products
-let list = document.getElementById("products");
-
-for (let i = 0; i < products.length; i++) {
-    let li = document.createElement("li");
-
-    li.innerHTML = products[i].name +
-    ' <button onclick="recommend(' + products[i].id + ')">View</button>';
-
-    list.appendChild(li);
-}
-
-// Get recommendations
-function recommend(id) {
-    fetch('/recommend', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({id: id})
-    })
-    .then(res => res.json())
-    .then(data => {
-        let rlist = document.getElementById("recommendations");
-        rlist.innerHTML = "";
-
-        for (let i = 0; i < data.length; i++) {
-            let li = document.createElement("li");
-            li.innerText = data[i].name;
-            rlist.appendChild(li);
+                const data = await response.json();
+                const recList = document.getElementById("recommendations");
+                recList.innerHTML = "";
+                
+                if (data.length === 0) {
+                    recList.innerHTML = "<li>No recommendations found</li>";
+                } else {
+                    data.forEach(item => {
+                        const li = document.createElement("li");
+                        li.textContent = item.name;
+                        recList.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                document.getElementById("recommendations").innerHTML = "<li>Error: " + error.message + "</li>";
+            }
         }
-    });
-}
-</script>
-
+    </script>
 </body>
 </html>
