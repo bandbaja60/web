@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Real-Time Sentiment Analysis</title>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <title>Sentiment Analysis</title>
 </head>
 <body>
-    <h2>Live Comment Sentiment Analysis</h2>
+    <h2>Comment Sentiment Analysis</h2>
 
     <input type="text" id="comment" placeholder="Type your comment">
     <button onclick="sendComment()">Analyze</button>
@@ -13,17 +12,22 @@
     <h3 id="result"></h3>
 
     <script>
-        const socket = io();
-
-        function sendComment() {
+        async function sendComment() {
             const text = document.getElementById("comment").value;
-            socket.emit('comment', { text: text });
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+                const data = await response.json();
+                document.getElementById("result").textContent = 'Sentiment: ' + data.sentiment;
+            } catch (error) {
+                document.getElementById("result").textContent = 'Error: ' + error.message;
+            }
         }
-
-        socket.on('sentiment_result', function(data) {
-            document.getElementById("result").innerText =
-                "Sentiment: " + data.sentiment;
-        });
     </script>
 </body>
 </html>

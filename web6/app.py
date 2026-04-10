@@ -1,17 +1,16 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
+from flask import Flask, render_template, request, jsonify
 from textblob import TextBlob
 
 app = Flask(__name__)
-socketio = SocketIO(app)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@socketio.on('comment')
-def analyze_sentiment(data):
-    comment = data['text']
+@app.route('/analyze', methods=['POST'])
+def analyze_sentiment():
+    data = request.get_json()
+    comment = data.get('text', '')
     analysis = TextBlob(comment)
     polarity = analysis.sentiment.polarity
 
@@ -22,7 +21,7 @@ def analyze_sentiment(data):
     else:
         sentiment = "Neutral 😐"
 
-    emit('sentiment_result', {'sentiment': sentiment})
+    return jsonify({'sentiment': sentiment})
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    app.run(debug=True)
