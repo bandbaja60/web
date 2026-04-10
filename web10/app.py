@@ -53,7 +53,8 @@ def home():
 
 @app.route('/check', methods=['POST'])
 def check():
-    text = request.json['text']
+    data = request.json();
+    text=data.get('text','');
     vec = vectorizer.transform([text])
     prediction = model.predict(vec)[0]
 

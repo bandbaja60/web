@@ -14,25 +14,33 @@
 <ul id="results"></ul>
 
 <script>
-function search() {
+ async function search() {
     let query = document.getElementById("query").value;
-
-    fetch('/search', {
+ try{
+    const response= await fetch('/search', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({query: query})
     })
-    .then(res => res.json())
-    .then(data => {
-        let list = document.getElementById("results");
-        list.innerHTML = "";
+    const data=await response.json();
+    
+    const resultList=document.getElementById("results");
+    resultList.textContent="";
+     data.forEach(item => {
+        const li=document.createElement("li");
+        li.textContent=item.name;
+        resultList.appendChild(li);
+     });
 
-        for (let i = 0; i < data.length; i++) {
-            let li = document.createElement("li");
-            li.innerText = data[i].name;
-            list.appendChild(li);
-        }
-    });
+    
+    }
+ 
+ 
+     catch (error) {
+                document.getElementById("results").innerHTML = "<li>Error: " + error.message + "</li>";
+            }
+ 
+    
 }
 </script>
 

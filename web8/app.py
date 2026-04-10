@@ -25,7 +25,8 @@ def home():
 
 @app.route('/search', methods=['POST'])
 def search():
-    query = request.json['query']
+    query = request.get_json();
+    query=query.get('query','')
 
     # Convert query to vector
     query_vec = vectorizer.transform([query])

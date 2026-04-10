@@ -13,18 +13,24 @@
 <h3 id="result"></h3>
 
 <script>
-function check() {
-    let text = document.getElementById("input").value;
+async function check() {
+    try {
+        let text = document.getElementById("input").value;
 
-    fetch('/check', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: text })
-    })
-    .then(res => res.json())
-    .then(data => {
+        const res = await fetch('/check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
+
+        const data = await res.json();
+
         document.getElementById("result").innerText = data.status;
-    });
+
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("result").innerText = "Something went wrong";
+    }
 }
 </script>
 
