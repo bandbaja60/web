@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import random
 
 app = Flask(__name__)
@@ -14,25 +14,30 @@ def home():
 def login():
     global current_otp
 
-    username = request.form.get('username')
-    password = request.form.get('password')
+    data = request.get_json()
+    username = data.get('username', '')
+    password = data.get('password', '')
 
     if username == USER['username'] and password == USER['password']:
         current_otp = str(random.randint(1000, 9999))
-        return f"OTP Generated: {current_otp}"  # ⚠️ insecure (see below)
+       
+        print(f"Generated OTP: {current_otp}")
+
+        return jsonify({'success': True})
     else:
-        return "Invalid Credentials"
+        return jsonify({'success': False, 'message': 'Invalid Credentials'})
 
 @app.route('/verify', methods=['POST'])
 def verify():
     global current_otp
 
-    otp = request.form.get('otp')
+    data = request.get_json()
+    otp = data.get('otp', '')
 
     if otp == current_otp:
-        return "Login Successful"
+        return jsonify({'success': True, 'message': 'Login Successful'})
     else:
-        return "Wrong OTP"
+        return jsonify({'success': False, 'message': 'Wrong OTP'})
 
 if __name__ == '__main__':
     app.run(debug=True)

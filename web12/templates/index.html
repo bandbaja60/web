@@ -7,20 +7,86 @@
 
 <h2>Simple MFA</h2>
 
-<form action="/login" method="post">
-    <h3>Login</h3>
-    Username: <input type="text" name="username"><br><br>
-    Password: <input type="password" name="password"><br><br>
-    <button type="submit">Login</button>
-</form>
+<h3>Login</h3>
+Username: <input type="text" id="username"><br><br>
+Password: <input type="password" id="password"><br><br>
+<button onclick="login()">Login</button>
+
+<p id="message"></p>
+
 
 <hr>
 
-<form action="/verify" method="post">
-    <h3>Verify OTP</h3>
-    OTP: <input type="text" name="otp"><br><br>
-    <button type="submit">Verify</button>
-</form>
+<h3>Verify OTP</h3>
+OTP: <input type="text" id="otp"><br><br>
+<button onclick="verify()">Verify</button>
+
+<div id="verify_message"></div>
+
+<script>
+    async function login() {
+        try {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (!username || !password) {
+                throw new Error("Username and password are required");
+            }
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: username, password: password})
+            })
+            
+            const data=await response.json();
+            document.getElementById("message").textContent="";
+            if(!data.success)
+            {
+                 document.getElementById("message").textContent="Invalid credentials";
+
+            }
+            else{
+                document.getElementById("message").textContent="opt send successfully";
+                
+            }
+        }
+            catch(error)
+            {
+                document.getElementById("message").textContent="Error : " + error.message;
+            }
+    }
+
+   async function verify() {
+    try {
+        const otp = document.getElementById("otp").value;
+
+        if (!otp) {
+            throw new Error("OTP is required");
+        }
+
+        const response = await fetch('/verify', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ otp: otp })
+        });
+
+        const data = await response.json();
+
+        const msgDiv = document.getElementById("verify_message");
+
+        if (data.success) {
+            msgDiv.innerHTML = "<p style='color: green;'>" + data.message + "</p>";
+        } else {
+            msgDiv.innerHTML = "<p style='color: red;'>" + data.message + "</p>";
+        }
+
+    } catch (error) {
+        document.getElementById("verify_message").innerHTML =
+            "<p style='color: red;'>Error: " + error.message + "</p>";
+    }
+}
+</script>
 
 </body>
 </html>
