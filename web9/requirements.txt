@@ -1,4 +1,0 @@
-flask 
-pyttsx3
-SpeechRecognition
-pyaudio
