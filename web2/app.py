@@ -1,11 +1,20 @@
 from flask import Flask, request, jsonify, render_template
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
 import pickle
-
 app = Flask(__name__)
 
-# Load trained model and vectorizer
-model = pickle.load(open("spam_model.pkl", "rb"))
+# -------------------------------
+# Step 1: Create a small dataset
+# -------------------------------
+
+model = pickle.load(open("spam_model.pkl", "rb")) 
 vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
+
+
+
+
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -21,12 +30,18 @@ def predict():
     return jsonify({
         "input_message": message,
         "prediction": prediction,
-        "result": "Spam " if prediction == "spam" else "Not Spam "
+        "result": "Spam" if prediction == "spam" else "Not Spam"
     })
 
-@app.route("/")
+# -------------------------------
+# Step 4: Home route
+# -------------------------------
+@app.route("/",methods=['POST','GET'])
 def home():
-    return render_template("index.html")
+    return render_template('index.html');
 
+# -------------------------------
+# Run app
+# -------------------------------
 if __name__ == "__main__":
     app.run(debug=True)

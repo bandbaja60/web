@@ -9,14 +9,6 @@ app = Flask(__name__)
 ## Load the model
 model = tf.keras.applications.MobileNetV2(weights='imagenet')
 
-from flask import Flask, render_template, request, jsonify
-import tensorflow as tf
-import numpy as np
-from PIL import Image
-
-app = Flask(__name__)
-
-model = tf.keras.applications.MobileNetV2(weights='imagenet')
 
 @app.route("/")
 def index():
