@@ -40,11 +40,11 @@ labels = [
 # Create vectorizer and model
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(messages)
-
+print(X);
 model = MultinomialNB()
 model.fit(X, labels)
 
-print("✅ Dummy model trained successfully")
+print(" Dummy model trained successfully")
 
 
 # -------------------------------
@@ -68,16 +68,11 @@ def predict():
     })
 
 
-# -------------------------------
-# Home route
-# -------------------------------
 @app.route("/", methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
 
 
-# -------------------------------
-# Run app
-# -------------------------------
+
 if __name__ == "__main__":
     app.run(debug=True)
